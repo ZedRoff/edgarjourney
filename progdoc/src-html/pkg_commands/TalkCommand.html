@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_commands;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3"></a>
+<span class="sourceLineNo">004</span><a id="line.4"> import javax.swing.JFrame;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import javax.swing.ImageIcon;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import javax.swing.JLabel;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">import pkg_gameobjects.Player;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import pkg_gameobjects.Character;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import pkg_gameobjects.MovingCharacter;</a>
+<span class="sourceLineNo">011</span><a id="line.11">/**</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * TalkCommand Class - Permits the player to talk to an NPC</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * @author Aman GHAZANFAR</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * @version 2023/05/06</a>
+<span class="sourceLineNo">015</span><a id="line.15"> */</a>
+<span class="sourceLineNo">016</span><a id="line.16">public class TalkCommand extends Command {</a>
+<span class="sourceLineNo">017</span><a id="line.17">     /**</a>
+<span class="sourceLineNo">018</span><a id="line.18">     * Execute function, common to every commands, overrides the abstract method of Command Class.</a>
+<span class="sourceLineNo">019</span><a id="line.19">     * @param pPlayer A Player object</a>
+<span class="sourceLineNo">020</span><a id="line.20">     */</a>
+<span class="sourceLineNo">021</span><a id="line.21">    @Override</a>
+<span class="sourceLineNo">022</span><a id="line.22">    public void execute(Player pPlayer) {</a>
+<span class="sourceLineNo">023</span><a id="line.23">        </a>
+<span class="sourceLineNo">024</span><a id="line.24">        // check if there is a second word</a>
+<span class="sourceLineNo">025</span><a id="line.25">        if (!super.hasSecondWord()) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">      pPlayer.getGUI().println("Talk to who ?");</a>
+<span class="sourceLineNo">027</span><a id="line.27">      return;</a>
+<span class="sourceLineNo">028</span><a id="line.28">    }</a>
+<span class="sourceLineNo">029</span><a id="line.29">    Character vCharacter = pPlayer.getCurrentRoom().getCharacter(super.getSecondWord()); // get the NPC by its name</a>
+<span class="sourceLineNo">030</span><a id="line.30">    if(vCharacter instanceof MovingCharacter) {</a>
+<span class="sourceLineNo">031</span><a id="line.31">        JFrame vFrame = new JFrame("The Map");</a>
+<span class="sourceLineNo">032</span><a id="line.32">    ImageIcon vIcon = new ImageIcon("./assets/map.png");</a>
+<span class="sourceLineNo">033</span><a id="line.33">    JLabel vLabel = new JLabel(vIcon);</a>
+<span class="sourceLineNo">034</span><a id="line.34">    vFrame.add(vLabel);</a>
+<span class="sourceLineNo">035</span><a id="line.35">    vFrame.pack();</a>
+<span class="sourceLineNo">036</span><a id="line.36">    vFrame.setVisible(true);</a>
+<span class="sourceLineNo">037</span><a id="line.37">    }</a>
+<span class="sourceLineNo">038</span><a id="line.38">    if(vCharacter == null) { // if the NPC isn't inside the Room</a>
+<span class="sourceLineNo">039</span><a id="line.39">        pPlayer.getGUI().println("There is no such NPC inside this Room");</a>
+<span class="sourceLineNo">040</span><a id="line.40">        return;</a>
+<span class="sourceLineNo">041</span><a id="line.41">    }</a>
+<span class="sourceLineNo">042</span><a id="line.42">    pPlayer.getGUI().println(vCharacter.getName() + " said : "+vCharacter.getDialog());</a>
+<span class="sourceLineNo">043</span><a id="line.43">    </a>
+<span class="sourceLineNo">044</span><a id="line.44">   </a>
+<span class="sourceLineNo">045</span><a id="line.45">    </a>
+<span class="sourceLineNo">046</span><a id="line.46">    } // execute(.)</a>
+<span class="sourceLineNo">047</span><a id="line.47">} // GoCommand</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

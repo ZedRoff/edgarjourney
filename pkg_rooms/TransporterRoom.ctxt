@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=TransporterRoom
+comment0.text=\r\n\ TransporterRoom\ Class\ -\ Handle\ the\ transporter\ Room\ methods\r\n\ @author\ Aman\ GHAZANFAR\r\n\ @version\ 2023.04.05\r\n
+comment1.params=pName\ pDescription\ pImage\ pRooms
+comment1.target=TransporterRoom(java.lang.String,\ java.lang.String,\ java.lang.String,\ java.util.HashMap)
+comment1.text=\r\n\ Constructor,\ instantiates\ all\ the\ attributes\r\n\ @param\ pName\ Room's\ name\r\n\ @param\ pDescription\ Room's\ description\r\n\ @param\ pImage\ Room's\ image\ file's\ path\r\n\ @param\ pRooms\ The\ visitage\ rooms\ HashMap\r\n
+comment2.params=
+comment2.target=Room\ findRandomRoom()
+comment2.text=\r\n\ Finds\ a\ random\ room\ thanks\ to\ the\ aRandomGenerator\ method\r\n\ @return\ A\ random\ room\ among\ the\ visitable\ rooms\r\n
+comment3.params=pDirection
+comment3.target=Room\ getExit(java.lang.String)
+comment3.text=\r\n\ As\ TransporterRoom\ is\ a\ sort\ of\ Room,\ we\ Override\ its\ exit\ so\ we\ don't\ have\ to\ change\ our\ initial\ conditions\ inside\ goRoom\ method\r\n\ @param\ pDirection\ The\ given\ direction\ we\ want\ to\ get\ the\ exit\ of\r\n\ @return\ The\ exit\ that\ was\ found\ from\ the\ given\ pDirection\r\n
+comment4.params=pString
+comment4.target=void\ setAlea(java.lang.String)
+comment4.text=\r\n\ For\ the\ test\ mode,\ we\ change\ the\ random\ room\ into\ a\ given\ room\ so\ we\ can\ know\ where\ the\ transporter\ room\ is\ going\ to\ lead\ us\r\n\ @param\ pString\ The\ Rooms's\ name\ you\ want\ to\ be\ teleported\ to\r\n
+numComments=5

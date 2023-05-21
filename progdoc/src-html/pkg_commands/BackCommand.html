@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_commands;</a>
+<span class="sourceLineNo">002</span><a id="line.2">import java.util.Stack;</a>
+<span class="sourceLineNo">003</span><a id="line.3">import pkg_gameobjects.Player;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import pkg_gameobjects.Door;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import pkg_rooms.Room;</a>
+<span class="sourceLineNo">006</span><a id="line.6">/**</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * BackCommand Class - Permits to back to the previous room the player was in</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * @author Aman GHAZANFAR</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * @version 2023/05/06</a>
+<span class="sourceLineNo">010</span><a id="line.10"> */</a>
+<span class="sourceLineNo">011</span><a id="line.11">public class BackCommand extends Command {</a>
+<span class="sourceLineNo">012</span><a id="line.12"> /**</a>
+<span class="sourceLineNo">013</span><a id="line.13">     * Execute function, common to every commands, overrides the abstract method of Command Class.</a>
+<span class="sourceLineNo">014</span><a id="line.14">     * @param pPlayer A Player object</a>
+<span class="sourceLineNo">015</span><a id="line.15">     */</a>
+<span class="sourceLineNo">016</span><a id="line.16">    @Override</a>
+<span class="sourceLineNo">017</span><a id="line.17">    public void execute(Player pPlayer) {</a>
+<span class="sourceLineNo">018</span><a id="line.18">        // check if there is a second word</a>
+<span class="sourceLineNo">019</span><a id="line.19">        if (super.hasSecondWord()) {</a>
+<span class="sourceLineNo">020</span><a id="line.20">        pPlayer.getGUI().println("This command doesn't accept a second argument.");</a>
+<span class="sourceLineNo">021</span><a id="line.21">        return;</a>
+<span class="sourceLineNo">022</span><a id="line.22">      } else {</a>
+<span class="sourceLineNo">023</span><a id="line.23">        // if the Player is right after a trap door, or after the teleportation process, or just at the starting of the game</a>
+<span class="sourceLineNo">024</span><a id="line.24">       if (pPlayer.getVisitedRooms().empty()) {</a>
+<span class="sourceLineNo">025</span><a id="line.25">       pPlayer.getGUI().println("You can't back here");</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">    }else { // if it's not the case</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        Room newRoom = (Room)pPlayer.getVisitedRooms().peek();</a>
+<span class="sourceLineNo">030</span><a id="line.30">       </a>
+<span class="sourceLineNo">031</span><a id="line.31">        // revert the previous direction so we can know from which room he comes from (TODO : could improve on that point)</a>
+<span class="sourceLineNo">032</span><a id="line.32">        String vNewDirection = "";</a>
+<span class="sourceLineNo">033</span><a id="line.33">        String vLastDirection = pPlayer.getLastDirection();</a>
+<span class="sourceLineNo">034</span><a id="line.34">        if(vLastDirection.equals("north")) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">            vNewDirection = "south";</a>
+<span class="sourceLineNo">036</span><a id="line.36">        } else if(vLastDirection.equals("south")) {</a>
+<span class="sourceLineNo">037</span><a id="line.37">            vNewDirection = "north";</a>
+<span class="sourceLineNo">038</span><a id="line.38">        } else if(vLastDirection.equals("east")) {</a>
+<span class="sourceLineNo">039</span><a id="line.39">            vNewDirection = "west";</a>
+<span class="sourceLineNo">040</span><a id="line.40">        } else if(vLastDirection.equals("west")) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">            vNewDirection = "east";</a>
+<span class="sourceLineNo">042</span><a id="line.42">        } else if(vLastDirection.equals("up")) {</a>
+<span class="sourceLineNo">043</span><a id="line.43">            vNewDirection = "down";</a>
+<span class="sourceLineNo">044</span><a id="line.44">        } else if(vLastDirection.equals("down") ){</a>
+<span class="sourceLineNo">045</span><a id="line.45">            vNewDirection = "up";</a>
+<span class="sourceLineNo">046</span><a id="line.46">        }</a>
+<span class="sourceLineNo">047</span><a id="line.47">       </a>
+<span class="sourceLineNo">048</span><a id="line.48">        // get the Door of the previous Room to check if it was a trap door</a>
+<span class="sourceLineNo">049</span><a id="line.49">        Door vNextDoor = pPlayer.getCurrentRoom().getDoor(vNewDirection);</a>
+<span class="sourceLineNo">050</span><a id="line.50">         </a>
+<span class="sourceLineNo">051</span><a id="line.51">    </a>
+<span class="sourceLineNo">052</span><a id="line.52">        if(!pPlayer.getCurrentRoom().isExit(newRoom)) { // if it's a trap door</a>
+<span class="sourceLineNo">053</span><a id="line.53">         pPlayer.getGUI().println("You can't back, it's a trap door.");</a>
+<span class="sourceLineNo">054</span><a id="line.54">        }</a>
+<span class="sourceLineNo">055</span><a id="line.55">         else if(vNextDoor != null &amp;&amp; vNextDoor.isLocked() &amp;&amp; !pPlayer.hasItem(vNextDoor.getKey().getName())) { // if it isn't a trap door, but it's locked, and the player doesn't have the item</a>
+<span class="sourceLineNo">056</span><a id="line.56">        pPlayer.getGUI().println("You can't back, you don't have the key");</a>
+<span class="sourceLineNo">057</span><a id="line.57">    </a>
+<span class="sourceLineNo">058</span><a id="line.58">    }else {</a>
+<span class="sourceLineNo">059</span><a id="line.59">         </a>
+<span class="sourceLineNo">060</span><a id="line.60">    pPlayer.getVisitedRooms().pop(); // unloads the last item of the visitedRooms stack</a>
+<span class="sourceLineNo">061</span><a id="line.61">    pPlayer.setCurrentRoom(newRoom); // changes player's currentRoom</a>
+<span class="sourceLineNo">062</span><a id="line.62">    pPlayer.getGUI().println("You're back at you're previous location."); // success message</a>
+<span class="sourceLineNo">063</span><a id="line.63">    }</a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
+<span class="sourceLineNo">065</span><a id="line.65">        pPlayer.getGameEngine().printLocationInfo(); // shows room's infos</a>
+<span class="sourceLineNo">066</span><a id="line.66">      }</a>
+<span class="sourceLineNo">067</span><a id="line.67">    }</a>
+<span class="sourceLineNo">068</span><a id="line.68">} // execute(.)</a>
+<span class="sourceLineNo">069</span><a id="line.69">} // BackCommand</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

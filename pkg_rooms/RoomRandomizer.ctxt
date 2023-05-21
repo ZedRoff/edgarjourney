@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=RoomRandomizer
+comment0.text=\r\n\ RoomRandomizer\ Class\ -\ Permits\ to\ generate\ a\ random\ room,\ has\ only\ one\ method\r\n\ @author\ Aman\ GHAZANFAR\r\n\ @version\ 2023.04.05\r\n
+comment1.params=
+comment1.target=RoomRandomizer()
+comment1.text=\r\n\ Constructor,\ instantiates\ the\ aRandom\ attribute\r\n
+comment2.params=pRooms
+comment2.target=Room\ generateRandomRoom(java.util.Collection)
+comment2.text=\r\n\ @param\ pRooms\ The\ Collection\ of\ visitableRooms\r\n\ @return\ A\ random\ room\ among\ the\ visitable\ Rooms\r\n
+numComments=3

@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Character
+comment0.text=\r\n\ Character\ Class\ -\ Handles\ all\ the\ NPC\ of\ the\ Game\r\n\ @author\ Aman\ GHAZANFAR\ \r\n\ @version\ 2023/05/21\ \ \r\n
+comment1.params=pName\ pDescription\ pDialog
+comment1.target=Character(java.lang.String,\ java.lang.String,\ java.lang.String)
+comment1.text=\r\n\ Character\ Class\ Constructor,\ instantiates\ all\ the\ attributes\r\n\ @param\ pName\ NPCs\ name\r\n\ @param\ pDescription\ NPCs\ description\r\n\ @param\ pDialog\ NPCs\ dialog\r\n
+comment2.params=
+comment2.target=java.lang.String\ getName()
+comment2.text=\r\n\ @return\ NPC's\ name\r\n
+comment3.params=
+comment3.target=java.lang.String\ getDescription()
+comment3.text=\r\n\ @return\ NPC's\ description\ (role)\r\n
+comment4.params=
+comment4.target=java.lang.String\ getDialog()
+comment4.text=\r\n\ @return\ NPC's\ dialog\r\n
+numComments=5

@@ -1,0 +1,4 @@
+take shoes
+go east
+take cup
+look cup

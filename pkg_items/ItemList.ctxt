@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=ItemList
+comment0.text=\r\n\ ItemList\ Class\ -\ Holds\ all\ the\ inventory\ functionalities\r\n\ @author\ Aman\ GHAZANFAR\r\n\ @version\ 27.03.2023\r\n
+comment1.params=
+comment1.target=ItemList()
+comment1.text=\r\n\ Constructor\ of\ ItemList\ Class,\ creates\ the\ HashMap\ that\ holds\ all\ the\ items\ of\ Player's\ inventory\ or\ Room's\ item\r\n
+comment2.params=pName
+comment2.target=Item\ getItem(java.lang.String)
+comment2.text=\r\n\ @param\ pName\ Item's\ name\r\n\ @return\ Item's\ corresponding\ object\r\n
+comment3.params=
+comment3.target=java.lang.String\ getItemsString()
+comment3.text=\r\n\ @return\ All\ the\ items\ (name\ and\ price)\ of\ Player's\ inventory\r\n
+comment4.params=pS\ pI
+comment4.target=void\ setItem(java.lang.String,\ Item)
+comment4.text=\r\n\ Adds\ the\ item\ to\ Player's\ inventory\r\n\ @param\ pS\ The\ name\ of\ the\ item\r\n\ @param\ pI\ Item's\ object\r\n
+comment5.params=pName
+comment5.target=void\ removeItem(java.lang.String)
+comment5.text=\r\n\ Removes\ the\ item\ from\ Player's\ inventory\r\n\ @param\ pName\ The\ name\ of\ the\ item\r\n
+comment6.params=
+comment6.target=java.lang.String\ toString()
+numComments=7

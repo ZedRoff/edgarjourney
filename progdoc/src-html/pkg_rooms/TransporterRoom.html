@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_rooms;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.ArrayList;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.HashMap;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.List;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.Collection;</a>
+<span class="sourceLineNo">008</span><a id="line.8">/**</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * TransporterRoom Class - Handle the transporter Room methods</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * @author Aman GHAZANFAR</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * @version 2023.04.05</a>
+<span class="sourceLineNo">012</span><a id="line.12"> */</a>
+<span class="sourceLineNo">013</span><a id="line.13">public class TransporterRoom extends Room { </a>
+<span class="sourceLineNo">014</span><a id="line.14">   // Attributes</a>
+<span class="sourceLineNo">015</span><a id="line.15">    private Collection&lt;Room&gt; aArrayRooms; // holds the values of the visitable rooms hashmap</a>
+<span class="sourceLineNo">016</span><a id="line.16">    private HashMap&lt;String, Room&gt; aRooms; // holds the visitable rooms hashmap</a>
+<span class="sourceLineNo">017</span><a id="line.17">    private RoomRandomizer aRandomGenerator; // holds a RoomRandomizer object</a>
+<span class="sourceLineNo">018</span><a id="line.18">    private String aAleaString; // the value of the randomRoom if test mode is activated</a>
+<span class="sourceLineNo">019</span><a id="line.19">    </a>
+<span class="sourceLineNo">020</span><a id="line.20">    /**</a>
+<span class="sourceLineNo">021</span><a id="line.21">     * Constructor, instantiates all the attributes</a>
+<span class="sourceLineNo">022</span><a id="line.22">     * @param pName Room's name</a>
+<span class="sourceLineNo">023</span><a id="line.23">     * @param pDescription Room's description</a>
+<span class="sourceLineNo">024</span><a id="line.24">     * @param pImage Room's image file's path</a>
+<span class="sourceLineNo">025</span><a id="line.25">     * @param pRooms The visitage rooms HashMap</a>
+<span class="sourceLineNo">026</span><a id="line.26">     */</a>
+<span class="sourceLineNo">027</span><a id="line.27">    public TransporterRoom(final String pName, final String pDescription, final String pImage, final HashMap&lt;String, Room&gt; pRooms) {</a>
+<span class="sourceLineNo">028</span><a id="line.28">     super(pName, pDescription, pImage);</a>
+<span class="sourceLineNo">029</span><a id="line.29">       aAleaString = "";</a>
+<span class="sourceLineNo">030</span><a id="line.30">       this.aRooms = pRooms;</a>
+<span class="sourceLineNo">031</span><a id="line.31">     this.aRandomGenerator = new RoomRandomizer();</a>
+<span class="sourceLineNo">032</span><a id="line.32">    } // TransporterRoom(.)</a>
+<span class="sourceLineNo">033</span><a id="line.33">    /**</a>
+<span class="sourceLineNo">034</span><a id="line.34">     * Finds a random room thanks to the aRandomGenerator method</a>
+<span class="sourceLineNo">035</span><a id="line.35">     * @return A random room among the visitable rooms</a>
+<span class="sourceLineNo">036</span><a id="line.36">     */</a>
+<span class="sourceLineNo">037</span><a id="line.37">    private Room findRandomRoom() {</a>
+<span class="sourceLineNo">038</span><a id="line.38">        aArrayRooms = this.aRooms.values();</a>
+<span class="sourceLineNo">039</span><a id="line.39">        </a>
+<span class="sourceLineNo">040</span><a id="line.40">        if(aAleaString.length() != 0) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">            return this.aRooms.get(aAleaString);</a>
+<span class="sourceLineNo">042</span><a id="line.42">        }</a>
+<span class="sourceLineNo">043</span><a id="line.43">       return aRandomGenerator.generateRandomRoom(aArrayRooms);</a>
+<span class="sourceLineNo">044</span><a id="line.44">       </a>
+<span class="sourceLineNo">045</span><a id="line.45">    } // findRandomRoom()</a>
+<span class="sourceLineNo">046</span><a id="line.46">    /**</a>
+<span class="sourceLineNo">047</span><a id="line.47">     * As TransporterRoom is a sort of Room, we Override its exit so we don't have to change our initial conditions inside goRoom method</a>
+<span class="sourceLineNo">048</span><a id="line.48">     * @param pDirection The given direction we want to get the exit of</a>
+<span class="sourceLineNo">049</span><a id="line.49">     * @return The exit that was found from the given pDirection</a>
+<span class="sourceLineNo">050</span><a id="line.50">     */</a>
+<span class="sourceLineNo">051</span><a id="line.51">    @Override public Room getExit(final String pDirection) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">        </a>
+<span class="sourceLineNo">053</span><a id="line.53">        if(!super.verifDirection(pDirection)) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">            return UNKNOWN_ROOM;</a>
+<span class="sourceLineNo">055</span><a id="line.55">        }</a>
+<span class="sourceLineNo">056</span><a id="line.56">      if(super.getExit(pDirection) == null) {</a>
+<span class="sourceLineNo">057</span><a id="line.57">          return null;</a>
+<span class="sourceLineNo">058</span><a id="line.58">      }</a>
+<span class="sourceLineNo">059</span><a id="line.59">      //System.out.println(findRandomRoom());</a>
+<span class="sourceLineNo">060</span><a id="line.60">        return findRandomRoom();</a>
+<span class="sourceLineNo">061</span><a id="line.61">    } // getExit(.)</a>
+<span class="sourceLineNo">062</span><a id="line.62">    /**</a>
+<span class="sourceLineNo">063</span><a id="line.63">     * For the test mode, we change the random room into a given room so we can know where the transporter room is going to lead us</a>
+<span class="sourceLineNo">064</span><a id="line.64">     * @param pString The Rooms's name you want to be teleported to</a>
+<span class="sourceLineNo">065</span><a id="line.65">     */</a>
+<span class="sourceLineNo">066</span><a id="line.66">    public void setAlea(final String pString) {</a>
+<span class="sourceLineNo">067</span><a id="line.67">        aAleaString = pString;</a>
+<span class="sourceLineNo">068</span><a id="line.68">    } // setAlea(.)</a>
+<span class="sourceLineNo">069</span><a id="line.69">} // TransporterRoom</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

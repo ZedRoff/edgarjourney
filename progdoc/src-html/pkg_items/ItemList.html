@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_items;</a>
+<span class="sourceLineNo">002</span><a id="line.2">import java.util.HashMap;</a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.Set;</a>
+<span class="sourceLineNo">004</span><a id="line.4">/**</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * ItemList Class - Holds all the inventory functionalities</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * @author Aman GHAZANFAR</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * @version 27.03.2023</a>
+<span class="sourceLineNo">008</span><a id="line.8"> */</a>
+<span class="sourceLineNo">009</span><a id="line.9">public class ItemList {</a>
+<span class="sourceLineNo">010</span><a id="line.10">  private HashMap &lt; String, Item &gt; aList; // hold items</a>
+<span class="sourceLineNo">011</span><a id="line.11">  /**</a>
+<span class="sourceLineNo">012</span><a id="line.12">   * Constructor of ItemList Class, creates the HashMap that holds all the items of Player's inventory or Room's item</a>
+<span class="sourceLineNo">013</span><a id="line.13">   */</a>
+<span class="sourceLineNo">014</span><a id="line.14">  public ItemList() {</a>
+<span class="sourceLineNo">015</span><a id="line.15">    this.aList = new HashMap &lt; String, Item &gt; ();</a>
+<span class="sourceLineNo">016</span><a id="line.16">  } // ItemList()</a>
+<span class="sourceLineNo">017</span><a id="line.17">  /**</a>
+<span class="sourceLineNo">018</span><a id="line.18">   * @param pName Item's name</a>
+<span class="sourceLineNo">019</span><a id="line.19">   * @return Item's corresponding object</a>
+<span class="sourceLineNo">020</span><a id="line.20">   */</a>
+<span class="sourceLineNo">021</span><a id="line.21">  public Item getItem(final String pName) {</a>
+<span class="sourceLineNo">022</span><a id="line.22">    return this.aList.get(pName.toLowerCase());</a>
+<span class="sourceLineNo">023</span><a id="line.23">  } // getItem(.)</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">   * @return All the items (name and price) of Player's inventory</a>
+<span class="sourceLineNo">027</span><a id="line.27">   */</a>
+<span class="sourceLineNo">028</span><a id="line.28">  public String getItemsString() {</a>
+<span class="sourceLineNo">029</span><a id="line.29">    StringBuilder vParse = new StringBuilder();</a>
+<span class="sourceLineNo">030</span><a id="line.30">    Set &lt; String &gt; vKeys = this.aList.keySet();</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">    for (String vItem: vKeys) {</a>
+<span class="sourceLineNo">033</span><a id="line.33">      vParse.append("[" + vItem + "]" + "(" + this.getItem(vItem).getWeight() + ") | ");</a>
+<span class="sourceLineNo">034</span><a id="line.34">    }</a>
+<span class="sourceLineNo">035</span><a id="line.35">    if (vParse.length() == 0) return "No item here";</a>
+<span class="sourceLineNo">036</span><a id="line.36">    return vParse.toString();</a>
+<span class="sourceLineNo">037</span><a id="line.37">  } // getItemsString()</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">  /**</a>
+<span class="sourceLineNo">040</span><a id="line.40">   * Adds the item to Player's inventory</a>
+<span class="sourceLineNo">041</span><a id="line.41">   * @param pS The name of the item</a>
+<span class="sourceLineNo">042</span><a id="line.42">   * @param pI Item's object</a>
+<span class="sourceLineNo">043</span><a id="line.43">   */</a>
+<span class="sourceLineNo">044</span><a id="line.44">  public void setItem(final String pS, final Item pI) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">    this.aList.put(pS.toLowerCase(), pI);</a>
+<span class="sourceLineNo">046</span><a id="line.46">  } // setItem(.)</a>
+<span class="sourceLineNo">047</span><a id="line.47">  /**</a>
+<span class="sourceLineNo">048</span><a id="line.48">   * Removes the item from Player's inventory</a>
+<span class="sourceLineNo">049</span><a id="line.49">   * @param pName The name of the item</a>
+<span class="sourceLineNo">050</span><a id="line.50">   */</a>
+<span class="sourceLineNo">051</span><a id="line.51">  public void removeItem(final String pName) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">    this.aList.remove(pName);</a>
+<span class="sourceLineNo">053</span><a id="line.53">  } // removeItem(.)</a>
+<span class="sourceLineNo">054</span><a id="line.54"></a>
+<span class="sourceLineNo">055</span><a id="line.55">  @Override public String toString() {</a>
+<span class="sourceLineNo">056</span><a id="line.56">      StringBuilder vParse = new StringBuilder();</a>
+<span class="sourceLineNo">057</span><a id="line.57">    Set &lt; String &gt; vKeys = this.aList.keySet();</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">    for (String vItem: vKeys) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">        vParse.append(vItem + ",");</a>
+<span class="sourceLineNo">061</span><a id="line.61">    }</a>
+<span class="sourceLineNo">062</span><a id="line.62">    return String.join(",",vKeys);</a>
+<span class="sourceLineNo">063</span><a id="line.63">  }</a>
+<span class="sourceLineNo">064</span><a id="line.64">} // ItemList</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

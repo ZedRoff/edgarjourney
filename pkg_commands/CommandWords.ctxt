@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=CommandWords
+comment0.text=\r\n\r\n\ This\ class\ holds\ an\ enumeration\ table\ of\ all\ command\ words\ known\ to\ the\ game.\r\n\ It\ is\ used\ to\ recognise\ commands\ as\ they\ are\ typed\ in.\r\n\r\n\ @author\ Aman\ GHAZANFAR\r\n\ @version\ 2023.02.09\r\n
+comment1.params=
+comment1.target=CommandWords()
+comment1.text=\r\n\ Constructor,\ instantiates\ the\ aValidCommands\ attribute\ by\ searching\ inside\ the\ CommandWord\ Class'\ enums\r\n
+comment2.params=pCommandWord
+comment2.target=CommandWord\ getCommandWord(java.lang.String)
+comment2.text=\r\n\ @param\ pCommandWord\ The\ first\ word\ of\ the\ command\ typed\ in\r\n\ @return\ The\ command\ corresponding\ to\ the\ pCommandWord\ given\r\n
+comment3.params=
+comment3.target=java.lang.String\ getCommandList()
+comment3.text=\r\n\ @return\ The\ list\ of\ all\ commands\ inside\ a\ single\ String\r\n
+comment4.params=pString
+comment4.target=boolean\ isCommand(java.lang.String)
+comment4.text=\r\n\ Check\ whether\ a\ given\ String\ is\ a\ valid\ command\ word.\ \r\n\ @param\ pString\ The\ command\ slitted\ with\ a\ space\r\n\ @return\ true\ if\ a\ given\ string\ is\ a\ valid\ command,\ false\ if\ it\ isn't.\r\n
+comment5.params=pCommandWord
+comment5.target=Command\ getFunc(java.lang.String)
+comment5.text=\r\n\ @param\ pCommandWord\ The\ first\ word\ of\ any\ command\r\n\ @return\ returns\ the\ actual\ function\ corresponding\ to\ the\ commandWord\ given\r\n
+numComments=6

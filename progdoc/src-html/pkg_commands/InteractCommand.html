@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_commands;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import pkg_gameobjects.Player;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import pkg_rooms.Room;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import pkg_items.Item;</a>
+<span class="sourceLineNo">006</span><a id="line.6">/**</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * TalkCommand Class - Permits the player to talk to an NPC</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * @author Aman GHAZANFAR</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * @version 2023/05/06</a>
+<span class="sourceLineNo">010</span><a id="line.10"> */</a>
+<span class="sourceLineNo">011</span><a id="line.11">public class InteractCommand extends Command {</a>
+<span class="sourceLineNo">012</span><a id="line.12">     /**</a>
+<span class="sourceLineNo">013</span><a id="line.13">     * Execute function, common to every commands, overrides the abstract method of Command Class.</a>
+<span class="sourceLineNo">014</span><a id="line.14">     * @param pPlayer A Player object</a>
+<span class="sourceLineNo">015</span><a id="line.15">     */</a>
+<span class="sourceLineNo">016</span><a id="line.16">    @Override</a>
+<span class="sourceLineNo">017</span><a id="line.17">    public void execute(Player pPlayer) {</a>
+<span class="sourceLineNo">018</span><a id="line.18">        </a>
+<span class="sourceLineNo">019</span><a id="line.19">        // check if there is a second word</a>
+<span class="sourceLineNo">020</span><a id="line.20">        if (!super.hasSecondWord()) {</a>
+<span class="sourceLineNo">021</span><a id="line.21">      pPlayer.getGUI().println("Talk to who ?");</a>
+<span class="sourceLineNo">022</span><a id="line.22">      return;</a>
+<span class="sourceLineNo">023</span><a id="line.23">    }</a>
+<span class="sourceLineNo">024</span><a id="line.24">    if(pPlayer.getCurrentRoom().getName().equals("cabin")) {</a>
+<span class="sourceLineNo">025</span><a id="line.25">        if(super.getSecondWord().equals("123")) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">            pPlayer.getGUI().println("Wrong number, maybe the cat was wrong ? Find another way to get the code...");</a>
+<span class="sourceLineNo">027</span><a id="line.27">            return;</a>
+<span class="sourceLineNo">028</span><a id="line.28">        }else if(super.getSecondWord().equals("321")) {</a>
+<span class="sourceLineNo">029</span><a id="line.29">            pPlayer.grantAccess();</a>
+<span class="sourceLineNo">030</span><a id="line.30">            pPlayer.getGUI().println("Right code, permission to enter basement granted");</a>
+<span class="sourceLineNo">031</span><a id="line.31">            return;</a>
+<span class="sourceLineNo">032</span><a id="line.32">        }</a>
+<span class="sourceLineNo">033</span><a id="line.33">    } else if(pPlayer.getCurrentRoom().getName().equals("living")) {</a>
+<span class="sourceLineNo">034</span><a id="line.34">        if(!super.getSecondWord().equals("watch")) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">            pPlayer.getGUI().println("Wrong answer, try again");</a>
+<span class="sourceLineNo">036</span><a id="line.36">        }else {</a>
+<span class="sourceLineNo">037</span><a id="line.37">            pPlayer.getGUI().println("Right answer, you now have access granted to go inside the laboratory");</a>
+<span class="sourceLineNo">038</span><a id="line.38">            pPlayer.getInventory().setItem("code", new Item("code", "The code of the laboratory now Edgar can use it if you go to this direction", 0));</a>
+<span class="sourceLineNo">039</span><a id="line.39">        }</a>
+<span class="sourceLineNo">040</span><a id="line.40">    } else if(pPlayer.getCurrentRoom().getName().equals("laboratory")) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">        if(!super.getSecondWord().equals("helloworld")) {</a>
+<span class="sourceLineNo">042</span><a id="line.42">            pPlayer.getGUI().println("Wrong password");</a>
+<span class="sourceLineNo">043</span><a id="line.43">        } else {</a>
+<span class="sourceLineNo">044</span><a id="line.44">            if(!pPlayer.hasItem("pass")){</a>
+<span class="sourceLineNo">045</span><a id="line.45">                javax.swing.JOptionPane.showMessageDialog(null, "Well played ! Edgar can now code, the game has ended. However, there is an item you missed in this game, try to find it :D");</a>
+<span class="sourceLineNo">046</span><a id="line.46">     return;</a>
+<span class="sourceLineNo">047</span><a id="line.47">            }</a>
+<span class="sourceLineNo">048</span><a id="line.48">            javax.swing.JOptionPane.showMessageDialog(null, "Well played ! Edgar can now code, the game has ended. Also, you find the pass, which completes the game.");</a>
+<span class="sourceLineNo">049</span><a id="line.49">   </a>
+<span class="sourceLineNo">050</span><a id="line.50">            pPlayer.getGUI().getFrame().dispose(); // disable the frame</a>
+<span class="sourceLineNo">051</span><a id="line.51">        pPlayer.getGUI().enable(false); // disable the entry field in case </a>
+<span class="sourceLineNo">052</span><a id="line.52">        }</a>
+<span class="sourceLineNo">053</span><a id="line.53">    </a>
+<span class="sourceLineNo">054</span><a id="line.54">    }else {</a>
+<span class="sourceLineNo">055</span><a id="line.55">        pPlayer.getGUI().println("This command can only be used inside the cabin &amp; the living room");</a>
+<span class="sourceLineNo">056</span><a id="line.56">    }</a>
+<span class="sourceLineNo">057</span><a id="line.57">    } // execute(.)</a>
+<span class="sourceLineNo">058</span><a id="line.58">} // InteractCommand</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

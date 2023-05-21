@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=MovingCharacter
+comment0.text=\r\n\ MovingCharacter\ Class\ -\ Handles\ all\ the\ moving\ NPCs\ of\ the\ Game\r\n
+comment1.params=pName\ pDescription\ pDialog
+comment1.target=MovingCharacter(java.lang.String,\ java.lang.String,\ java.lang.String)
+comment1.text=\r\n\ Character\ Class\ Constructor,\ instantiates\ all\ the\ attributes\r\n\ @param\ pName\ NPC's\ name\r\n\ @param\ pDescription\ NPC's\ description\r\n\ @param\ pDialog\ NPC's\ dialog\r\n
+comment2.params=pRoom
+comment2.target=void\ move(pkg_rooms.Room)
+comment2.text=\r\n\ Allowed\ a\ MovingCharacter\ type\ object\ to\ move\ around\ the\ map\r\n\ @param\ pRoom\ The\ new\ Room\ he\ is\ going\ to\ be\ in\r\n
+numComments=3

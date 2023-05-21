@@ -1,0 +1,376 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_gameobjects;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import pkg_utils.UserInterface;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import pkg_utils.Parser;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import pkg_rooms.Room;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import pkg_rooms.TransporterRoom;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import pkg_items.Item;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import pkg_items.Beamer;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import pkg_commands.Command;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import pkg_commands.CommandWord;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import pkg_gameobjects.Character;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import pkg_gameobjects.MovingCharacter;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.Stack;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.io.File;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.HashMap;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import java.util.Scanner;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import java.util.concurrent.TimeUnit;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import javax.swing.Timer;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import java.awt.event.ActionEvent;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import java.awt.event.ActionListener;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import java.util.ArrayList;</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">/**</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * GameEngine Class - The main class that creates the Player Object and contains all the printX() commands, creates the rooms, sets their items, also holds the commands and their correspondings</a>
+<span class="sourceLineNo">026</span><a id="line.26"> *</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * @author Aman GHAZANFAR</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * @version 2023.03.23</a>
+<span class="sourceLineNo">029</span><a id="line.29"> */</a>
+<span class="sourceLineNo">030</span><a id="line.30">public class GameEngine {</a>
+<span class="sourceLineNo">031</span><a id="line.31">  // Attributes</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">  private Parser aParser; // the parser permits to read the input field</a>
+<span class="sourceLineNo">034</span><a id="line.34">  private UserInterface aGui; // the user interface that holds all the components</a>
+<span class="sourceLineNo">035</span><a id="line.35">  private HashMap &lt; String, Room &gt; aRooms; // holds all the visitable rooms of the game (that doesn't require keys or spoils the game)</a>
+<span class="sourceLineNo">036</span><a id="line.36">  private Player aPlayer; // the Player object</a>
+<span class="sourceLineNo">037</span><a id="line.37">  private Timer aTimer; // holds a timer's methods</a>
+<span class="sourceLineNo">038</span><a id="line.38">  private HashMap&lt;String, Room&gt; allRooms;</a>
+<span class="sourceLineNo">039</span><a id="line.39">  </a>
+<span class="sourceLineNo">040</span><a id="line.40">  /**</a>
+<span class="sourceLineNo">041</span><a id="line.41">   * The constructor of Game Class, calls the createRooms method, makes an instance of Parser Class, creates the Player Object, and instantiates the room hashmap</a>
+<span class="sourceLineNo">042</span><a id="line.42">   * @param pName The name of the Player</a>
+<span class="sourceLineNo">043</span><a id="line.43">    */</a>
+<span class="sourceLineNo">044</span><a id="line.44">  public GameEngine(final String pName) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">    this.aRooms = new HashMap &lt; String, Room &gt; ();</a>
+<span class="sourceLineNo">046</span><a id="line.46">     this.allRooms = new HashMap&lt; String, Room &gt; ();</a>
+<span class="sourceLineNo">047</span><a id="line.47"></a>
+<span class="sourceLineNo">048</span><a id="line.48">    this.createRooms();</a>
+<span class="sourceLineNo">049</span><a id="line.49">    this.aParser = new Parser();</a>
+<span class="sourceLineNo">050</span><a id="line.50">    this.aPlayer = new Player(pName, this.aRooms.get("bedroom"), this);</a>
+<span class="sourceLineNo">051</span><a id="line.51">   </a>
+<span class="sourceLineNo">052</span><a id="line.52">    this.aTimer = new Timer(120000, new ActionListener() {</a>
+<span class="sourceLineNo">053</span><a id="line.53">   </a>
+<span class="sourceLineNo">054</span><a id="line.54">        // the timer that asks player whether he is sleeping or not</a>
+<span class="sourceLineNo">055</span><a id="line.55">    public void actionPerformed(ActionEvent evt) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">    javax.swing.JOptionPane.showMessageDialog(null, "Are you sleeping ?");</a>
+<span class="sourceLineNo">057</span><a id="line.57">    </a>
+<span class="sourceLineNo">058</span><a id="line.58">     ((Timer)evt.getSource()).stop();</a>
+<span class="sourceLineNo">059</span><a id="line.59">    }    </a>
+<span class="sourceLineNo">060</span><a id="line.60">});</a>
+<span class="sourceLineNo">061</span><a id="line.61">  } // GameEngine(.)</a>
+<span class="sourceLineNo">062</span><a id="line.62">  /**</a>
+<span class="sourceLineNo">063</span><a id="line.63">   * @return the visitable Rooms</a>
+<span class="sourceLineNo">064</span><a id="line.64">   */</a>
+<span class="sourceLineNo">065</span><a id="line.65">  public HashMap&lt;String, Room&gt; getRooms() {</a>
+<span class="sourceLineNo">066</span><a id="line.66">      return aRooms;</a>
+<span class="sourceLineNo">067</span><a id="line.67">  } // getRooms()</a>
+<span class="sourceLineNo">068</span><a id="line.68">  public Parser getParser() {</a>
+<span class="sourceLineNo">069</span><a id="line.69">      return this.aParser;</a>
+<span class="sourceLineNo">070</span><a id="line.70">  }</a>
+<span class="sourceLineNo">071</span><a id="line.71">  </a>
+<span class="sourceLineNo">072</span><a id="line.72">  /**</a>
+<span class="sourceLineNo">073</span><a id="line.73">   * Sets the user interface</a>
+<span class="sourceLineNo">074</span><a id="line.74">   * @param pUserInterface A UserInterface type object</a>
+<span class="sourceLineNo">075</span><a id="line.75">   */</a>
+<span class="sourceLineNo">076</span><a id="line.76">  public void setGUI(final UserInterface pUserInterface) {</a>
+<span class="sourceLineNo">077</span><a id="line.77">    this.aGui = pUserInterface;</a>
+<span class="sourceLineNo">078</span><a id="line.78">    this.printWelcome();</a>
+<span class="sourceLineNo">079</span><a id="line.79">  } // setGUI(.)</a>
+<span class="sourceLineNo">080</span><a id="line.80">  /**</a>
+<span class="sourceLineNo">081</span><a id="line.81">   * @return the GameEngine objet</a>
+<span class="sourceLineNo">082</span><a id="line.82">   */</a>
+<span class="sourceLineNo">083</span><a id="line.83">  public UserInterface getGUI() {</a>
+<span class="sourceLineNo">084</span><a id="line.84">      return this.aGui;</a>
+<span class="sourceLineNo">085</span><a id="line.85">  } // getGUI()</a>
+<span class="sourceLineNo">086</span><a id="line.86">  /**</a>
+<span class="sourceLineNo">087</span><a id="line.87">   * Permits to create all the rooms and assign them their exits, the items and puts the values inside aRooms.</a>
+<span class="sourceLineNo">088</span><a id="line.88">   * Remark: The first room is Edgar's bedroom.</a>
+<span class="sourceLineNo">089</span><a id="line.89">   */</a>
+<span class="sourceLineNo">090</span><a id="line.90">  private void createRooms() {</a>
+<span class="sourceLineNo">091</span><a id="line.91"></a>
+<span class="sourceLineNo">092</span><a id="line.92">    Room vBedroom = new Room("bedroom", "Edgar's bedroom.", "./assets/bedroom.png");</a>
+<span class="sourceLineNo">093</span><a id="line.93">    Room vKitchen = new Room("kitchen", "Edgar's kitchen.", "./assets/kitchen.png");</a>
+<span class="sourceLineNo">094</span><a id="line.94">    Room vGarage = new Room("garage", "inside the garage", "./assets/garage.png");</a>
+<span class="sourceLineNo">095</span><a id="line.95">    Room vBathroom = new Room("bathroom", "inside a bathroom", "./assets/bathroom.png");</a>
+<span class="sourceLineNo">096</span><a id="line.96">    Room vCabin = new Room("cabin", "inside the phone booth, use interact command inside it...", "./assets/phone.png");</a>
+<span class="sourceLineNo">097</span><a id="line.97">    Room vOutside = new Room("outside", "outside the house", "./assets/outside.png");</a>
+<span class="sourceLineNo">098</span><a id="line.98">    Room vEntry = new Room("entry", "inside the intrance hall (underground)", "./assets/intrance.png");</a>
+<span class="sourceLineNo">099</span><a id="line.99">    Room vPantry = new Room("pantry", "inside the pantry, miam", "./assets/pantry.png");</a>
+<span class="sourceLineNo">100</span><a id="line.100">    Room vLiving = new Room("living", "inside the living room", "./assets/living.jpg");</a>
+<span class="sourceLineNo">101</span><a id="line.101">    Room vLaboratory = new Room("laboratory", "inside the LABOORATORYYY", "./assets/laboratory.png");</a>
+<span class="sourceLineNo">102</span><a id="line.102">    HashMap&lt;String,Room&gt; aVisitableRooms;</a>
+<span class="sourceLineNo">103</span><a id="line.103">  </a>
+<span class="sourceLineNo">104</span><a id="line.104">    Room vTransporter = new TransporterRoom("transporter","You are inside the transporter room. You can't back now. When you exit this room, you are going to get teleported to a random room", "./assets/transporter.jpg", aRooms);</a>
+<span class="sourceLineNo">105</span><a id="line.105">    </a>
+<span class="sourceLineNo">106</span><a id="line.106">    </a>
+<span class="sourceLineNo">107</span><a id="line.107">    Item vCup = new Item("cup", "A cup of coffee", 10);</a>
+<span class="sourceLineNo">108</span><a id="line.108">    Item vShoes = new Item("shoes", "Edgar's Shoes", 20);</a>
+<span class="sourceLineNo">109</span><a id="line.109">    Item vCoin = new Item("coin", "A coin, let's see what its purpose", 5);</a>
+<span class="sourceLineNo">110</span><a id="line.110">    Item vBeamer = new Beamer("beamer", "Permits to teleport to a room. Look for charge and fire commands", 10);</a>
+<span class="sourceLineNo">111</span><a id="line.111">    Item vKey = new Item("key", "A key to open a door", 20);</a>
+<span class="sourceLineNo">112</span><a id="line.112">    Item vToolbox = new Item("toolbox", "A very suspicious toolbox", 10);</a>
+<span class="sourceLineNo">113</span><a id="line.113">    Item vCream = new Item("cream", "Nivea Cream for the face", 10);</a>
+<span class="sourceLineNo">114</span><a id="line.114">    Item vToothpaste = new Item("toothpaste", "Toothpaste for some good white teeths", 10);</a>
+<span class="sourceLineNo">115</span><a id="line.115">    Item vBrush = new Item("brush", "TeethBrush, apply the toothpaste on it", 10);</a>
+<span class="sourceLineNo">116</span><a id="line.116">    // Bedroom part</a>
+<span class="sourceLineNo">117</span><a id="line.117">     vBedroom.setExit("east", vKitchen);</a>
+<span class="sourceLineNo">118</span><a id="line.118">    vBedroom.setExit("south", vBathroom);</a>
+<span class="sourceLineNo">119</span><a id="line.119">    </a>
+<span class="sourceLineNo">120</span><a id="line.120">    vBedroom.addCharacter(new Character("Mom", "Edgar's mom, she is very angry that you are late", "Hey ! Wake up you are late ! As always..."));</a>
+<span class="sourceLineNo">121</span><a id="line.121">    vBedroom.addCharacter(new MovingCharacter("Recupix", "Edgar's robot, he can do many fancy things", "Hey ! My name is Recupix, I can show you the map and give you hints whenever you need it ! And I will follow you everywhere as well !"));</a>
+<span class="sourceLineNo">122</span><a id="line.122">    </a>
+<span class="sourceLineNo">123</span><a id="line.123">    vBedroom.addItem(vShoes);</a>
+<span class="sourceLineNo">124</span><a id="line.124">  </a>
+<span class="sourceLineNo">125</span><a id="line.125">    </a>
+<span class="sourceLineNo">126</span><a id="line.126">    vBedroom.lockDoor("east", vShoes);</a>
+<span class="sourceLineNo">127</span><a id="line.127"></a>
+<span class="sourceLineNo">128</span><a id="line.128">    vBedroom.lockDoor("south", vCup);</a>
+<span class="sourceLineNo">129</span><a id="line.129">    </a>
+<span class="sourceLineNo">130</span><a id="line.130">    // end bedroom part</a>
+<span class="sourceLineNo">131</span><a id="line.131">    </a>
+<span class="sourceLineNo">132</span><a id="line.132">    // kitchen part</a>
+<span class="sourceLineNo">133</span><a id="line.133">    vKitchen.setExit("west", vBedroom);</a>
+<span class="sourceLineNo">134</span><a id="line.134">    vKitchen.setExit("south", vGarage);</a>
+<span class="sourceLineNo">135</span><a id="line.135">    vKitchen.setExit("east", vTransporter);</a>
+<span class="sourceLineNo">136</span><a id="line.136">  </a>
+<span class="sourceLineNo">137</span><a id="line.137">    vKitchen.addItem(vBeamer);</a>
+<span class="sourceLineNo">138</span><a id="line.138">    vKitchen.addItem(vCup);</a>
+<span class="sourceLineNo">139</span><a id="line.139">    </a>
+<span class="sourceLineNo">140</span><a id="line.140">    vKitchen.lockDoor("south",vCup);</a>
+<span class="sourceLineNo">141</span><a id="line.141">    vKitchen.lockDoor("east", vCoin);</a>
+<span class="sourceLineNo">142</span><a id="line.142">    </a>
+<span class="sourceLineNo">143</span><a id="line.143">    vKitchen.addCharacter(new Character("Brother","Edgar's brother", "Hey bro ! Ready for this first coding day ? Oh and, I changed your computer's password, it's helloworld now..."));</a>
+<span class="sourceLineNo">144</span><a id="line.144">    // end kitchen part</a>
+<span class="sourceLineNo">145</span><a id="line.145"></a>
+<span class="sourceLineNo">146</span><a id="line.146">    // garage part</a>
+<span class="sourceLineNo">147</span><a id="line.147">    </a>
+<span class="sourceLineNo">148</span><a id="line.148">    // vGarage.setExit("north", vKitchen); -&gt; commented for trap doors system</a>
+<span class="sourceLineNo">149</span><a id="line.149">    vGarage.setExit("west", vBathroom);</a>
+<span class="sourceLineNo">150</span><a id="line.150">    vGarage.setExit("south", vOutside);</a>
+<span class="sourceLineNo">151</span><a id="line.151">    </a>
+<span class="sourceLineNo">152</span><a id="line.152">    vGarage.addItem(vToolbox);</a>
+<span class="sourceLineNo">153</span><a id="line.153">    </a>
+<span class="sourceLineNo">154</span><a id="line.154">    vGarage.lockDoor("south", vKey);</a>
+<span class="sourceLineNo">155</span><a id="line.155">    // end garage part</a>
+<span class="sourceLineNo">156</span><a id="line.156">    </a>
+<span class="sourceLineNo">157</span><a id="line.157">    // bathroom part</a>
+<span class="sourceLineNo">158</span><a id="line.158">    </a>
+<span class="sourceLineNo">159</span><a id="line.159">    vBathroom.setExit("east", vGarage);</a>
+<span class="sourceLineNo">160</span><a id="line.160">    vBathroom.setExit("north", vBedroom);</a>
+<span class="sourceLineNo">161</span><a id="line.161">    </a>
+<span class="sourceLineNo">162</span><a id="line.162">    vBathroom.addItem(vKey);</a>
+<span class="sourceLineNo">163</span><a id="line.163">    vBathroom.addItem(vCream);</a>
+<span class="sourceLineNo">164</span><a id="line.164">    vBathroom.addItem(vToothpaste);</a>
+<span class="sourceLineNo">165</span><a id="line.165">    vBathroom.addItem(vBrush);</a>
+<span class="sourceLineNo">166</span><a id="line.166">    </a>
+<span class="sourceLineNo">167</span><a id="line.167">    // end bathroom part</a>
+<span class="sourceLineNo">168</span><a id="line.168">   </a>
+<span class="sourceLineNo">169</span><a id="line.169">    vOutside.addCharacter(new Character("cat", "A cat you can examinate", "The code of the cabin is 123"));</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171"></a>
+<span class="sourceLineNo">172</span><a id="line.172">    vPantry.addItem(new Item("cookie", "With these cookies, you can carry out more weight", 10));</a>
+<span class="sourceLineNo">173</span><a id="line.173"></a>
+<span class="sourceLineNo">174</span><a id="line.174">    vLaboratory.addItem(new Item("computer", "Edgar's Computer where you have to write the program", 0));</a>
+<span class="sourceLineNo">175</span><a id="line.175">    vLaboratory.addItem(new Item("keyboard", "Edgar's computer's keyboard", 0));</a>
+<span class="sourceLineNo">176</span><a id="line.176">    vLaboratory.addItem(new Item("mouse", "Edgar's computer's mouse", 0));</a>
+<span class="sourceLineNo">177</span><a id="line.177"></a>
+<span class="sourceLineNo">178</span><a id="line.178">    </a>
+<span class="sourceLineNo">179</span><a id="line.179">    </a>
+<span class="sourceLineNo">180</span><a id="line.180">    vOutside.setExit("west", vCabin);</a>
+<span class="sourceLineNo">181</span><a id="line.181">    vOutside.setExit("north", vGarage);</a>
+<span class="sourceLineNo">182</span><a id="line.182">    </a>
+<span class="sourceLineNo">183</span><a id="line.183">    vCabin.setExit("east", vOutside);</a>
+<span class="sourceLineNo">184</span><a id="line.184">    vCabin.setExit("down", vEntry);</a>
+<span class="sourceLineNo">185</span><a id="line.185">    vCabin.addItem(new Item("manual", "WARNING ! The cat gave you a wrong information..., the real code is 321 !!", 0));</a>
+<span class="sourceLineNo">186</span><a id="line.186">    </a>
+<span class="sourceLineNo">187</span><a id="line.187">    vPantry.setExit("east", vEntry);</a>
+<span class="sourceLineNo">188</span><a id="line.188">       vEntry.setExit("east", vLiving);</a>
+<span class="sourceLineNo">189</span><a id="line.189">    vEntry.setExit("west", vPantry);</a>
+<span class="sourceLineNo">190</span><a id="line.190">    vEntry.setExit("up", vCabin);</a>
+<span class="sourceLineNo">191</span><a id="line.191"> vEntry.lockDoor("east", new Item("cookie", "n", 0));</a>
+<span class="sourceLineNo">192</span><a id="line.192">   </a>
+<span class="sourceLineNo">193</span><a id="line.193">    vLiving.setExit("east", vLaboratory);</a>
+<span class="sourceLineNo">194</span><a id="line.194">    vLiving.setExit("west", vEntry);</a>
+<span class="sourceLineNo">195</span><a id="line.195">   </a>
+<span class="sourceLineNo">196</span><a id="line.196">    vLiving.addCharacter(new Character("Saro", "A mage is inside your living room", "Who has two needles, but does not prick? Use interact command to reply..."));</a>
+<span class="sourceLineNo">197</span><a id="line.197"> </a>
+<span class="sourceLineNo">198</span><a id="line.198"> vTransporter.setExit("east", Room.UNKNOWN_ROOM);</a>
+<span class="sourceLineNo">199</span><a id="line.199"> </a>
+<span class="sourceLineNo">200</span><a id="line.200">   </a>
+<span class="sourceLineNo">201</span><a id="line.201">    vLaboratory.setExit("west", vLiving);</a>
+<span class="sourceLineNo">202</span><a id="line.202">    vLaboratory.lockDoor("west", new Item("code", "n", 0));</a>
+<span class="sourceLineNo">203</span><a id="line.203">    vLiving.lockDoor("east", new Item("code", "n", 0));</a>
+<span class="sourceLineNo">204</span><a id="line.204">    </a>
+<span class="sourceLineNo">205</span><a id="line.205"></a>
+<span class="sourceLineNo">206</span><a id="line.206">    vOutside.lockDoor("north", vKey);</a>
+<span class="sourceLineNo">207</span><a id="line.207">   </a>
+<span class="sourceLineNo">208</span><a id="line.208">   // only put the rooms where you can't get softlock / doesn't gets you ahead of scenario, and thanks to that I can exclude the transporter room </a>
+<span class="sourceLineNo">209</span><a id="line.209">    aRooms.put("bedroom", vBedroom);</a>
+<span class="sourceLineNo">210</span><a id="line.210">    aRooms.put("kitchen", vKitchen);</a>
+<span class="sourceLineNo">211</span><a id="line.211">    aRooms.put("garage", vGarage);</a>
+<span class="sourceLineNo">212</span><a id="line.212">    aRooms.put("bathroom", vGarage);</a>
+<span class="sourceLineNo">213</span><a id="line.213">    aRooms.put("transporter", vTransporter);</a>
+<span class="sourceLineNo">214</span><a id="line.214">    </a>
+<span class="sourceLineNo">215</span><a id="line.215">// all rooms out there</a>
+<span class="sourceLineNo">216</span><a id="line.216"></a>
+<span class="sourceLineNo">217</span><a id="line.217">    allRooms.put("pantry", vPantry);</a>
+<span class="sourceLineNo">218</span><a id="line.218">    allRooms.put("living", vLiving);</a>
+<span class="sourceLineNo">219</span><a id="line.219">    allRooms.put("laboratory", vLaboratory);</a>
+<span class="sourceLineNo">220</span><a id="line.220">    allRooms.put("bedroom", vBedroom);</a>
+<span class="sourceLineNo">221</span><a id="line.221">    allRooms.put("kitchen", vKitchen);</a>
+<span class="sourceLineNo">222</span><a id="line.222">    allRooms.put("garage", vGarage);</a>
+<span class="sourceLineNo">223</span><a id="line.223">    allRooms.put("bathroom", vGarage);</a>
+<span class="sourceLineNo">224</span><a id="line.224">    allRooms.put("transporter", vTransporter);</a>
+<span class="sourceLineNo">225</span><a id="line.225">    allRooms.put("cabin", vCabin);</a>
+<span class="sourceLineNo">226</span><a id="line.226">    allRooms.put("outside", vOutside);</a>
+<span class="sourceLineNo">227</span><a id="line.227">    allRooms.put("entry", vEntry);</a>
+<span class="sourceLineNo">228</span><a id="line.228">    </a>
+<span class="sourceLineNo">229</span><a id="line.229">  } // createRooms()</a>
+<span class="sourceLineNo">230</span><a id="line.230">     public HashMap&lt;String, Room&gt; getAllRooms() {</a>
+<span class="sourceLineNo">231</span><a id="line.231">         return this.allRooms;</a>
+<span class="sourceLineNo">232</span><a id="line.232">     }</a>
+<span class="sourceLineNo">233</span><a id="line.233">  /**</a>
+<span class="sourceLineNo">234</span><a id="line.234">   * Shows the GUI, avoids redondant code</a>
+<span class="sourceLineNo">235</span><a id="line.235">   * @param pNextRoom The next room the player wants to go in</a>
+<span class="sourceLineNo">236</span><a id="line.236">   */</a>
+<span class="sourceLineNo">237</span><a id="line.237">  public void showGUI(final Room pNextRoom) {</a>
+<span class="sourceLineNo">238</span><a id="line.238">      </a>
+<span class="sourceLineNo">239</span><a id="line.239"> </a>
+<span class="sourceLineNo">240</span><a id="line.240">      </a>
+<span class="sourceLineNo">241</span><a id="line.241">      this.aPlayer.setVisitedRoom();</a>
+<span class="sourceLineNo">242</span><a id="line.242">    </a>
+<span class="sourceLineNo">243</span><a id="line.243">      pNextRoom.addCharacter(this.aPlayer.getCurrentRoom().getCharacter("Recupix"));</a>
+<span class="sourceLineNo">244</span><a id="line.244">   </a>
+<span class="sourceLineNo">245</span><a id="line.245">      this.aPlayer.getCurrentRoom().removeCharacter(this.aPlayer.getCurrentRoom().getCharacter("Recupix"));</a>
+<span class="sourceLineNo">246</span><a id="line.246">   </a>
+<span class="sourceLineNo">247</span><a id="line.247">    this.aPlayer.setCurrentRoom(pNextRoom);</a>
+<span class="sourceLineNo">248</span><a id="line.248"></a>
+<span class="sourceLineNo">249</span><a id="line.249">    this.printLocationInfo();</a>
+<span class="sourceLineNo">250</span><a id="line.250">        </a>
+<span class="sourceLineNo">251</span><a id="line.251">    this.aTimer.start();</a>
+<span class="sourceLineNo">252</span><a id="line.252">  } // showGUI(.)</a>
+<span class="sourceLineNo">253</span><a id="line.253">  /**</a>
+<span class="sourceLineNo">254</span><a id="line.254">   * Prints the starting game's message (welcome message, exits available and shows the start image).</a>
+<span class="sourceLineNo">255</span><a id="line.255">   */</a>
+<span class="sourceLineNo">256</span><a id="line.256">  private void printWelcome() {</a>
+<span class="sourceLineNo">257</span><a id="line.257">    this.aGui.println("Welcome "+this.aPlayer.getName()+" to Edgar's Journey!\nCome and discover a typical developer's life !\nType "+CommandWord.HELP+" if you need help.");</a>
+<span class="sourceLineNo">258</span><a id="line.258">    this.aGui.println("\n");</a>
+<span class="sourceLineNo">259</span><a id="line.259">  this.aGui.println(this.aPlayer.getCurrentRoom().getLongDescription());</a>
+<span class="sourceLineNo">260</span><a id="line.260">   </a>
+<span class="sourceLineNo">261</span><a id="line.261">this.aTimer.start();</a>
+<span class="sourceLineNo">262</span><a id="line.262">    if (this.aPlayer.getCurrentRoom().getImageName() != null) this.aGui.showImage(this.aPlayer.getCurrentRoom().getImageName());</a>
+<span class="sourceLineNo">263</span><a id="line.263">  } // printWelcome()</a>
+<span class="sourceLineNo">264</span><a id="line.264">  /**</a>
+<span class="sourceLineNo">265</span><a id="line.265">   * The help page of the game, prints out all the available commands.</a>
+<span class="sourceLineNo">266</span><a id="line.266">   */</a>
+<span class="sourceLineNo">267</span><a id="line.267">  private void printHelp() {</a>
+<span class="sourceLineNo">268</span><a id="line.268">    this.aGui.println("How could you be lost inside/near your own house..., anyway, here is the help page\n.You command word are: ");</a>
+<span class="sourceLineNo">269</span><a id="line.269">    this.aGui.println(this.aParser.getCommandString());</a>
+<span class="sourceLineNo">270</span><a id="line.270"></a>
+<span class="sourceLineNo">271</span><a id="line.271">  } // printHelp()</a>
+<span class="sourceLineNo">272</span><a id="line.272">  </a>
+<span class="sourceLineNo">273</span><a id="line.273"></a>
+<span class="sourceLineNo">274</span><a id="line.274">  /**</a>
+<span class="sourceLineNo">275</span><a id="line.275">   * Handles all the commands side, to all the aValidCommands corresponds a method thanks to this method. </a>
+<span class="sourceLineNo">276</span><a id="line.276">   * @param pCommandLine A String composed of two words</a>
+<span class="sourceLineNo">277</span><a id="line.277">   */</a>
+<span class="sourceLineNo">278</span><a id="line.278">  public void interpretCommand(final String pCommandLine) {</a>
+<span class="sourceLineNo">279</span><a id="line.279">    </a>
+<span class="sourceLineNo">280</span><a id="line.280">    Command vCommand = aParser.getCommand(pCommandLine);</a>
+<span class="sourceLineNo">281</span><a id="line.281">      </a>
+<span class="sourceLineNo">282</span><a id="line.282">    if(vCommand == null) {</a>
+<span class="sourceLineNo">283</span><a id="line.283">        this.aGui.println("I don't understand...");</a>
+<span class="sourceLineNo">284</span><a id="line.284">    } else {</a>
+<span class="sourceLineNo">285</span><a id="line.285">        if(!(aPlayer.getCurrentRoom() instanceof TransporterRoom)) {</a>
+<span class="sourceLineNo">286</span><a id="line.286">            this.aPlayer.addAction(vCommand.getCommandWord(), vCommand.getSecondWord());</a>
+<span class="sourceLineNo">287</span><a id="line.287">        }</a>
+<span class="sourceLineNo">288</span><a id="line.288">      </a>
+<span class="sourceLineNo">289</span><a id="line.289">        vCommand.execute(aPlayer);</a>
+<span class="sourceLineNo">290</span><a id="line.290">    }</a>
+<span class="sourceLineNo">291</span><a id="line.291"></a>
+<span class="sourceLineNo">292</span><a id="line.292">  } // interpretCommand(.)</a>
+<span class="sourceLineNo">293</span><a id="line.293"> </a>
+<span class="sourceLineNo">294</span><a id="line.294">  /**</a>
+<span class="sourceLineNo">295</span><a id="line.295">   * Prints out on the GUI the details about a room (items, exits and description). And shows the image.</a>
+<span class="sourceLineNo">296</span><a id="line.296">   */</a>
+<span class="sourceLineNo">297</span><a id="line.297">  public void printLocationInfo() {</a>
+<span class="sourceLineNo">298</span><a id="line.298">    this.aGui.println(this.aPlayer.getCurrentRoom().getLongDescription());</a>
+<span class="sourceLineNo">299</span><a id="line.299">    if (this.aPlayer.getCurrentRoom().getImageName() != null) this.aGui.showImage(this.aPlayer.getCurrentRoom().getImageName());</a>
+<span class="sourceLineNo">300</span><a id="line.300">  } // printLocationInfo().</a>
+<span class="sourceLineNo">301</span><a id="line.301"></a>
+<span class="sourceLineNo">302</span><a id="line.302">} // GameEngine</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

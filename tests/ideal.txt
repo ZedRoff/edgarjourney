@@ -1,0 +1,25 @@
+take shoes
+go east
+take cup 
+go west
+go south
+take brush
+take toothpaste
+drop shoes
+take cream
+drop brush
+take key
+go east
+go south 
+go west
+interact 321
+go down
+go west 
+drop key 
+take cookie
+go east 
+go east 
+interact watch 
+go east 
+interact helloworld
+

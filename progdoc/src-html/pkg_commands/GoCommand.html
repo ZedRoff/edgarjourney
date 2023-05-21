@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_commands;</a>
+<span class="sourceLineNo">002</span><a id="line.2">import pkg_gameobjects.Player;</a>
+<span class="sourceLineNo">003</span><a id="line.3">import pkg_rooms.Room;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import pkg_gameobjects.Door;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import pkg_gameobjects.Character;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import pkg_gameobjects.MovingCharacter;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import pkg_rooms.TransporterRoom;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import pkg_items.Item;</a>
+<span class="sourceLineNo">009</span><a id="line.9">/**</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * GoCommand Class - Permits the player to move around the map, directions : north, south, east, west, up and down</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * @author Aman GHAZANFAR</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * @version 2023/05/06</a>
+<span class="sourceLineNo">013</span><a id="line.13"> */</a>
+<span class="sourceLineNo">014</span><a id="line.14">public class GoCommand extends Command {</a>
+<span class="sourceLineNo">015</span><a id="line.15">     /**</a>
+<span class="sourceLineNo">016</span><a id="line.16">     * Execute function, common to every commands, overrides the abstract method of Command Class.</a>
+<span class="sourceLineNo">017</span><a id="line.17">     * @param pPlayer A Player object</a>
+<span class="sourceLineNo">018</span><a id="line.18">     */</a>
+<span class="sourceLineNo">019</span><a id="line.19">    @Override</a>
+<span class="sourceLineNo">020</span><a id="line.20">    public void execute(Player pPlayer) {</a>
+<span class="sourceLineNo">021</span><a id="line.21">        </a>
+<span class="sourceLineNo">022</span><a id="line.22">        // check if there is a second word</a>
+<span class="sourceLineNo">023</span><a id="line.23">        if (!super.hasSecondWord()) {</a>
+<span class="sourceLineNo">024</span><a id="line.24">      pPlayer.getGUI().println("Go where");</a>
+<span class="sourceLineNo">025</span><a id="line.25">      return;</a>
+<span class="sourceLineNo">026</span><a id="line.26">    }</a>
+<span class="sourceLineNo">027</span><a id="line.27">    </a>
+<span class="sourceLineNo">028</span><a id="line.28">    String vDirection = super.getSecondWord(); // get the direction input</a>
+<span class="sourceLineNo">029</span><a id="line.29">  </a>
+<span class="sourceLineNo">030</span><a id="line.30">    Room vNextRoom = pPlayer.getCurrentRoom().getExit(vDirection); // get the next room according to the direction</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">    // if vNextRoom returned the unknownroom, meaning we have an unknown direction</a>
+<span class="sourceLineNo">033</span><a id="line.33">        if (vNextRoom == Room.UNKNOWN_ROOM) {</a>
+<span class="sourceLineNo">034</span><a id="line.34">      pPlayer.getGUI().println("Unknown direction");</a>
+<span class="sourceLineNo">035</span><a id="line.35">      return;</a>
+<span class="sourceLineNo">036</span><a id="line.36">    }</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">  // if there is no room according to the direction</a>
+<span class="sourceLineNo">039</span><a id="line.39">    if (vNextRoom == null) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">       pPlayer.getGUI().println("There is no door");</a>
+<span class="sourceLineNo">041</span><a id="line.41">      return;</a>
+<span class="sourceLineNo">042</span><a id="line.42">    }</a>
+<span class="sourceLineNo">043</span><a id="line.43"> </a>
+<span class="sourceLineNo">044</span><a id="line.44">    if(pPlayer.getCurrentRoom() instanceof TransporterRoom) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">        Item vI = new Item("pass", "A pass to open a chest", 0);</a>
+<span class="sourceLineNo">046</span><a id="line.46">        pPlayer.getInventory().setItem(vI.getName(), vI);</a>
+<span class="sourceLineNo">047</span><a id="line.47">        </a>
+<span class="sourceLineNo">048</span><a id="line.48">        pPlayer.getGUI().println("You gone through the TransporterRoom and found a pass, gg ! It must be usefull use it ...");</a>
+<span class="sourceLineNo">049</span><a id="line.49">        pPlayer.addAction("go", vNextRoom.getName());</a>
+<span class="sourceLineNo">050</span><a id="line.50">    }</a>
+<span class="sourceLineNo">051</span><a id="line.51">    </a>
+<span class="sourceLineNo">052</span><a id="line.52"> Door vNextDoor = pPlayer.getCurrentRoom().getDoor(vDirection); // get the door to check if he is locked or he is a trap door</a>
+<span class="sourceLineNo">053</span><a id="line.53">   </a>
+<span class="sourceLineNo">054</span><a id="line.54"> </a>
+<span class="sourceLineNo">055</span><a id="line.55"> // check if the door is locked</a>
+<span class="sourceLineNo">056</span><a id="line.56">    if(vNextDoor.isLocked()) {</a>
+<span class="sourceLineNo">057</span><a id="line.57">        </a>
+<span class="sourceLineNo">058</span><a id="line.58">    if(vNextDoor.getKey().getName().equals("coin")) {</a>
+<span class="sourceLineNo">059</span><a id="line.59">                 if(pPlayer.getCoins() &gt;= 1) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                     pPlayer.removeCoins();</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        pPlayer.incrementMoves(); // increments his move count, 25 maximum allowed</a>
+<span class="sourceLineNo">062</span><a id="line.62">            pPlayer.getGameEngine().showGUI(vNextRoom); // shows all the infos about the room</a>
+<span class="sourceLineNo">063</span><a id="line.63">             pPlayer.setLastDirection(vDirection); // for the case if the key has been dropped, and the user wants to go to a direction, we store the last direction</a>
+<span class="sourceLineNo">064</span><a id="line.64">             // to then revert it if needed</a>
+<span class="sourceLineNo">065</span><a id="line.65">           return;</a>
+<span class="sourceLineNo">066</span><a id="line.66">                 } else {</a>
+<span class="sourceLineNo">067</span><a id="line.67">                     pPlayer.getGUI().println("You need at least one coin to enter this Room");</a>
+<span class="sourceLineNo">068</span><a id="line.68">                     return;</a>
+<span class="sourceLineNo">069</span><a id="line.69">                 }</a>
+<span class="sourceLineNo">070</span><a id="line.70">             </a>
+<span class="sourceLineNo">071</span><a id="line.71">            }</a>
+<span class="sourceLineNo">072</span><a id="line.72">        // check if the player has the key</a>
+<span class="sourceLineNo">073</span><a id="line.73">     if(pPlayer.hasItem(vNextDoor.getKey().getName())) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">         pPlayer.incrementMoves(); // increments his move count, 25 maximum allowed</a>
+<span class="sourceLineNo">075</span><a id="line.75">            pPlayer.getGameEngine().showGUI(vNextRoom); // shows all the infos about the room</a>
+<span class="sourceLineNo">076</span><a id="line.76">             pPlayer.setLastDirection(vDirection); // for the case if the key has been dropped, and the user wants to go to a direction, we store the last direction</a>
+<span class="sourceLineNo">077</span><a id="line.77">             // to then revert it if needed</a>
+<span class="sourceLineNo">078</span><a id="line.78">           </a>
+<span class="sourceLineNo">079</span><a id="line.79">               </a>
+<span class="sourceLineNo">080</span><a id="line.80">        }else {</a>
+<span class="sourceLineNo">081</span><a id="line.81">            String vItemName = vNextDoor.getKey().getName();</a>
+<span class="sourceLineNo">082</span><a id="line.82">            if(vItemName.equals("shoes")) {</a>
+<span class="sourceLineNo">083</span><a id="line.83">                pPlayer.getGUI().println("You don't wear your shoes, mom is going to be angry !");</a>
+<span class="sourceLineNo">084</span><a id="line.84">                return;</a>
+<span class="sourceLineNo">085</span><a id="line.85">            }</a>
+<span class="sourceLineNo">086</span><a id="line.86">            if(vItemName.equals("cup")){</a>
+<span class="sourceLineNo">087</span><a id="line.87">                pPlayer.getGUI().println("You don't have your coffee, Edgar can't work without his morning coffee");</a>
+<span class="sourceLineNo">088</span><a id="line.88">                return;</a>
+<span class="sourceLineNo">089</span><a id="line.89">            }</a>
+<span class="sourceLineNo">090</span><a id="line.90">            if(vItemName.equals("cookie") &amp;&amp; pPlayer.getMaxWeight() == 50) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">                pPlayer.getGUI().println("You can't open this door it's too heavy for you");</a>
+<span class="sourceLineNo">092</span><a id="line.92">                return;</a>
+<span class="sourceLineNo">093</span><a id="line.93">            }</a>
+<span class="sourceLineNo">094</span><a id="line.94">           </a>
+<span class="sourceLineNo">095</span><a id="line.95">            pPlayer.getGUI().println("You don't have the key, you can't go inside this Room"); // error message </a>
+<span class="sourceLineNo">096</span><a id="line.96">            </a>
+<span class="sourceLineNo">097</span><a id="line.97">            </a>
+<span class="sourceLineNo">098</span><a id="line.98">        }</a>
+<span class="sourceLineNo">099</span><a id="line.99">      </a>
+<span class="sourceLineNo">100</span><a id="line.100">    }else {</a>
+<span class="sourceLineNo">101</span><a id="line.101">        if(pPlayer.getCurrentRoom().getName().equals("cabin") &amp;&amp; vDirection.equals("south")) {</a>
+<span class="sourceLineNo">102</span><a id="line.102">           if(!pPlayer.getAuthBasement()) {</a>
+<span class="sourceLineNo">103</span><a id="line.103">                pPlayer.getGUI().println("You don't have the authorization to go inside this room, maybe there is a quest you still have to complete...");</a>
+<span class="sourceLineNo">104</span><a id="line.104">                return;</a>
+<span class="sourceLineNo">105</span><a id="line.105">            }</a>
+<span class="sourceLineNo">106</span><a id="line.106">        }</a>
+<span class="sourceLineNo">107</span><a id="line.107">        </a>
+<span class="sourceLineNo">108</span><a id="line.108">        pPlayer.incrementMoves(); // increments his move count, 25 maximum allowed</a>
+<span class="sourceLineNo">109</span><a id="line.109">        pPlayer.getGameEngine().showGUI(vNextRoom); // shows all the infos about the room</a>
+<span class="sourceLineNo">110</span><a id="line.110">               pPlayer.setLastDirection(vDirection);// for the case if the key has been dropped, and the user wants to go to a direction, we store the last direction</a>
+<span class="sourceLineNo">111</span><a id="line.111">             // to then revert it if needed</a>
+<span class="sourceLineNo">112</span><a id="line.112">   </a>
+<span class="sourceLineNo">113</span><a id="line.113">             //pPlayer.getCurrentRoom().getCharacter("Recupix").move(vNextRoom);</a>
+<span class="sourceLineNo">114</span><a id="line.114">    }</a>
+<span class="sourceLineNo">115</span><a id="line.115">       } // execute(.)</a>
+<span class="sourceLineNo">116</span><a id="line.116">} // GoCommand</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

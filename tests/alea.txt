@@ -1,0 +1,11 @@
+alea kitchen
+take shoes
+go east
+take cup
+go south
+take toolbox
+go west
+go north
+go east
+go east
+go east

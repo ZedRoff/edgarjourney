@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=HelpCommand
+comment0.text=\r\n\ HelpCommand\ Class\ -\ Shows\ the\ help\ manual\ to\ the\ player\r\n
+comment1.params=pPlayer
+comment1.target=void\ execute(pkg_gameobjects.Player)
+comment1.text=\r\n\ Execute\ function,\ common\ to\ every\ commands,\ overrides\ the\ abstract\ method\ of\ Command\ Class.\r\n\ @param\ pPlayer\ A\ Player\ object\r\n
+numComments=2

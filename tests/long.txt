@@ -1,0 +1,36 @@
+take shoes
+talk Mom
+talk Recupix
+look
+go east
+look cup
+take cup 
+talk Brother
+go west
+go south
+take brush
+take toothpaste
+drop shoes
+take cream
+drop brush
+take key
+go east
+go south 
+talk cat
+go west
+take manual
+look manual
+interact 321
+go down
+go west 
+drop key 
+take cookie
+go east 
+go east 
+talk Saro
+interact watch 
+go east 
+take computer
+look
+interact helloworld
+

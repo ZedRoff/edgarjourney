@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.target=Command
+comment0.text=\r\n\ Command\ Class\ -\ Handles\ all\ the\ command\ side,\ a\ command\ is\ composed\ of\ two\ words\ (the\ command\ word\ and\ the\ argument\ word).\r\n\r\n\ @author\ Aman\ GHAZANFAR\r\n\ @version\ 2023.02.09\r\n
+comment1.params=
+comment1.target=java.lang.String\ getSecondWord()
+comment1.text=\r\n\ @return\ A\ String\ with\ the\ argument\ word.\ (second\ word).\r\n
+comment2.params=
+comment2.target=boolean\ isUnknown()
+comment3.params=
+comment3.target=java.lang.String\ getCommandWord()
+comment3.text=\r\n\ @return\ The\ command\ word\ of\ the\ line\ user\ gave\r\n
+comment4.params=
+comment4.target=boolean\ hasSecondWord()
+comment4.text=\r\n\ @return\ A\ boolean\ \:\ true\ if\ there\ is\ a\ second\ word.\ false\ \:\ if\ there\ is\ no\ second\ word.\r\n
+comment5.params=pSecondWord
+comment5.target=void\ setSecondWord(java.lang.String)
+comment5.text=\r\n\ Define\ the\ second\ word\ of\ this\ command\ (the\ word\r\n\ entered\ after\ the\ command\ word).\ Null\ indicates\ that\ \r\n\ there\ was\ no\ second\ word.\r\n\ @param\ pSecondWord\ The\ second\ word\ of\ any\ Command\r\n
+comment6.params=pCommandWord
+comment6.target=void\ setCommandWord(java.lang.String)
+comment6.text=\r\n\ Sets\ the\ command\ word\ on\ the\ command\ (the\ word\ entered\ before\ the\ second\ word).\ \r\n\ Null\ indicates\ that\ there\ was\ no\ first\ word.\r\n\ @param\ pCommandWord\ The\ first\ word\ of\ any\ command\r\n
+comment7.params=pPlayer
+comment7.target=void\ execute(pkg_gameobjects.Player)
+comment7.text=\r\n\ Abstract\ method,\ has\ to\ be\ re-written\ inside\ every\ command,\ permits\ to\ avoid\ using\ all\ the\ switch\ inside\ interpretCommand,\ heritage\ \r\n\ @param\ pPlayer\ The\ Player\ Object\ (current\ Player\ so\ it\ can\ handle\ more\ than\ 1\ player)\r\n
+numComments=8

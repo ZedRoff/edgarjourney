@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_items;</a>
+<span class="sourceLineNo">002</span><a id="line.2">import pkg_rooms.Room;</a>
+<span class="sourceLineNo">003</span><a id="line.3">/**</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Beamer Class - Handles the methods for a Beamer, Item for teleporting the player</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * @author Aman GHAZANFAR</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * @version 2023.04.02</a>
+<span class="sourceLineNo">007</span><a id="line.7"> */</a>
+<span class="sourceLineNo">008</span><a id="line.8">public class Beamer extends Item {</a>
+<span class="sourceLineNo">009</span><a id="line.9">    // Attributes</a>
+<span class="sourceLineNo">010</span><a id="line.10">    private Room aChargedRoom; // the room the beamer was charge in</a>
+<span class="sourceLineNo">011</span><a id="line.11"> /**</a>
+<span class="sourceLineNo">012</span><a id="line.12">     * Constructor, initialize the Beamer like a usual Item</a>
+<span class="sourceLineNo">013</span><a id="line.13">     * @param pName The name of the beamer</a>
+<span class="sourceLineNo">014</span><a id="line.14">     * @param pDescription The description of the beamer</a>
+<span class="sourceLineNo">015</span><a id="line.15">     * @param pWeight The weight of the beamer</a>
+<span class="sourceLineNo">016</span><a id="line.16">     */</a>
+<span class="sourceLineNo">017</span><a id="line.17">    public Beamer(final String pName, final String pDescription, final double pWeight) {</a>
+<span class="sourceLineNo">018</span><a id="line.18">        super(pName, pDescription, pWeight);</a>
+<span class="sourceLineNo">019</span><a id="line.19">        </a>
+<span class="sourceLineNo">020</span><a id="line.20">    } // Beamer(.)</a>
+<span class="sourceLineNo">021</span><a id="line.21">    /**</a>
+<span class="sourceLineNo">022</span><a id="line.22">     * Changes the Room the Beamer is charged in</a>
+<span class="sourceLineNo">023</span><a id="line.23">     * @param pRoom The Room where the beamer is charged</a>
+<span class="sourceLineNo">024</span><a id="line.24">     * @return The String that permits GameEngine to show the result of the request for the command</a>
+<span class="sourceLineNo">025</span><a id="line.25">     */</a>
+<span class="sourceLineNo">026</span><a id="line.26">    public String charge(final Room pRoom) {</a>
+<span class="sourceLineNo">027</span><a id="line.27">            this.aChargedRoom = pRoom;</a>
+<span class="sourceLineNo">028</span><a id="line.28">            return "You're Beamer has been charged successfuly";</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        </a>
+<span class="sourceLineNo">031</span><a id="line.31">        } // charge(.)</a>
+<span class="sourceLineNo">032</span><a id="line.32">        /**</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * Changes the chargedRoom to null, and teleports the Player into the given room</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * @return The String that permits GameEngine to show the result of the request for the command</a>
+<span class="sourceLineNo">035</span><a id="line.35">         */</a>
+<span class="sourceLineNo">036</span><a id="line.36">    public String fire() {</a>
+<span class="sourceLineNo">037</span><a id="line.37">        Room vStock = this.aChargedRoom;</a>
+<span class="sourceLineNo">038</span><a id="line.38">        this.aChargedRoom = null;</a>
+<span class="sourceLineNo">039</span><a id="line.39">        return "You fired the Beamer, you got teleported to : "+"\n"+vStock.getLongDescription();</a>
+<span class="sourceLineNo">040</span><a id="line.40">    } // fire()</a>
+<span class="sourceLineNo">041</span><a id="line.41">    /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">     * @return The Room the beamer was charged in</a>
+<span class="sourceLineNo">043</span><a id="line.43">     */</a>
+<span class="sourceLineNo">044</span><a id="line.44">    public Room getChargedRoom() {</a>
+<span class="sourceLineNo">045</span><a id="line.45">        return this.aChargedRoom;</a>
+<span class="sourceLineNo">046</span><a id="line.46">    } // getChargedRoom()</a>
+<span class="sourceLineNo">047</span><a id="line.47">    /**</a>
+<span class="sourceLineNo">048</span><a id="line.48">     * @return The state of the Beamer, whether it is charged or not</a>
+<span class="sourceLineNo">049</span><a id="line.49">     */</a>
+<span class="sourceLineNo">050</span><a id="line.50">    public boolean canFire() {</a>
+<span class="sourceLineNo">051</span><a id="line.51">        return this.aChargedRoom != null;</a>
+<span class="sourceLineNo">052</span><a id="line.52">    } // canFire()</a>
+<span class="sourceLineNo">053</span><a id="line.53">   </a>
+<span class="sourceLineNo">054</span><a id="line.54">} // Beamer</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

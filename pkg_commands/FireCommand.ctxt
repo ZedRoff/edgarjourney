@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=FireCommand
+comment0.text=\r\n\ FireCommand\ Class\ -\ Permits\ to\ fire\ the\ Beamer\ so\ it\ teleports\ you\ to\ a\ Room\r\n\ @author\ Aman\ GHAZANFAR\r\n\ @version\ 2023/05/06\r\n
+comment1.params=pPlayer
+comment1.target=void\ execute(pkg_gameobjects.Player)
+comment1.text=\r\n\ Execute\ function,\ common\ to\ every\ commands,\ overrides\ the\ abstract\ method\ of\ Command\ Class.\r\n\ @param\ pPlayer\ A\ Player\ object\r\n
+numComments=2

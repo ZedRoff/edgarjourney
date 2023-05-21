@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Beamer
+comment0.text=\r\n\ Beamer\ Class\ -\ Handles\ the\ methods\ for\ a\ Beamer,\ Item\ for\ teleporting\ the\ player\r\n\ @author\ Aman\ GHAZANFAR\r\n\ @version\ 2023.04.02\r\n
+comment1.params=pName\ pDescription\ pWeight
+comment1.target=Beamer(java.lang.String,\ java.lang.String,\ double)
+comment1.text=\r\n\ Constructor,\ initialize\ the\ Beamer\ like\ a\ usual\ Item\r\n\ @param\ pName\ The\ name\ of\ the\ beamer\r\n\ @param\ pDescription\ The\ description\ of\ the\ beamer\r\n\ @param\ pWeight\ The\ weight\ of\ the\ beamer\r\n
+comment2.params=pRoom
+comment2.target=java.lang.String\ charge(pkg_rooms.Room)
+comment2.text=\r\n\ Changes\ the\ Room\ the\ Beamer\ is\ charged\ in\r\n\ @param\ pRoom\ The\ Room\ where\ the\ beamer\ is\ charged\r\n\ @return\ The\ String\ that\ permits\ GameEngine\ to\ show\ the\ result\ of\ the\ request\ for\ the\ command\r\n
+comment3.params=
+comment3.target=java.lang.String\ fire()
+comment3.text=\r\n\ Changes\ the\ chargedRoom\ to\ null,\ and\ teleports\ the\ Player\ into\ the\ given\ room\r\n\ @return\ The\ String\ that\ permits\ GameEngine\ to\ show\ the\ result\ of\ the\ request\ for\ the\ command\r\n
+comment4.params=
+comment4.target=pkg_rooms.Room\ getChargedRoom()
+comment4.text=\r\n\ @return\ The\ Room\ the\ beamer\ was\ charged\ in\r\n
+comment5.params=
+comment5.target=boolean\ canFire()
+comment5.text=\r\n\ @return\ The\ state\ of\ the\ Beamer,\ whether\ it\ is\ charged\ or\ not\r\n
+numComments=6
